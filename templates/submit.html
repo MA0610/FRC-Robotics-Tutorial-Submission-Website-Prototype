@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}FRC Robotics Tutorials{% endblock %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRC Robotics Tutorials Submission</title>
+    <style>
+        .main-container {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .addTutorial div {
+            margin-bottom: 15px;
+        }
+        label {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            display: block;
+        }
+        textarea {
+            width: 100%; 
+            padding: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; 
+            min-height: 50px;  
+            resize: none;  
+            overflow-y: hidden;  
+        }
+        textarea:hover {
+            border-color: #007BFF;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .radio-buttons {
+            display: flex;
+            gap: 20px;
+        }
+        .radio-buttons label {
+            font-size: 1em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Tutorial Submission</h1>
+
+    <br></br>
+
+    <div class="main-container">
+        <div class="addTutorial">
+            <h2>New Tutorial</h2>
+
+            <div class="add-Tutorial-Subject">
+                <label for="new-Tutorial-Subject">Tutorial Subject:</label>
+                <textarea id="new-Tutorial-Subject" placeholder="Enter Tutorial Subject..." oninput="resizeTextarea(this)"></textarea>
+            </div>
+
+            <div class="add-Tutorial-Language">
+                <label for="new-Tutorial-Language">Tutorial Language:</label>
+                <div class="radio-buttons">
+                    <label><input type="radio" name="language" value="Java" id="languageJava"> Java</label>
+                    <label><input type="radio" name="language" value="C++" id="languageCpp"> C++</label>
+                    <label><input type="radio" name="language" value="Python" id="languagePython"> Python</label>
+                    <label><input type="radio" name="language" value="LabView" id="languageLabView"> LabView</label>
+                </div>
+            </div>
+
+            <div class="add-Tutorial-Username">
+                <label for="new-Tutorial-Username">Username:</label>
+                <textarea id="new-Tutorial-Username" placeholder="Enter Username..." oninput="resizeTextarea(this)"></textarea>
+            </div>
+
+            <div class="add-Tutorial-Description">
+                <label for="new-Tutorial-Description">Tutorial Description:</label>
+                <textarea id="new-Tutorial-Description" placeholder="Enter Tutorial Description..." oninput="resizeTextarea(this)"></textarea>
+            </div>
+
+            <div class="add-Tutorial-Link">
+                <label for="new-Tutorial-Link">Github Link:</label>
+                <textarea id="new-Tutorial-Link" placeholder="Enter Github Link..." oninput="resizeTextarea(this)"></textarea>
+            </div>
+
+            <button type="button" id="submitButton">Submit Tutorial</button>  
+
+            <br></br>
+        </div>  
+    </div>
+
+    <script>
+        // Function to resize the textarea dynamically based on content
+        function resizeTextarea(textarea) {
+            // Reset the height to auto to shrink back if content is deleted
+            textarea.style.height = 'auto';
+            // Set the height to fit the content
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+        // Reset the textareas to their original size
+        function resetTextareaSize() {
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(textarea => {
+                textarea.style.height = '50px'; // Reset to original min-height
+            });
+        }
+
+        
+        document.getElementById('submitButton').addEventListener('click', () => {
+            const subject = document.getElementById('new-Tutorial-Subject').value;
+            const description = document.getElementById('new-Tutorial-Description').value;
+            const userName = document.getElementById('new-Tutorial-Username').value;
+            const link = document.getElementById('new-Tutorial-Link').value;
+            const language = document.querySelector('input[name="language"]:checked')?.value;
+
+
+
+            if (!subject || !description || !userName || !link || !language) {
+                alert("Please fill in all fields before submitting.");
+                return; 
+            }
+
+
+            const requestData = {
+                tutorialSubject: subject, 
+                tutorialDescription: description,
+                tutorialLanguage: language,  
+                tutorialUsername: userName,
+                tutorialLink: link
+            };
+
+            // Clear the form inputs
+            document.getElementById('new-Tutorial-Subject').value = '';
+            document.getElementById('new-Tutorial-Description').value = '';
+            document.getElementById('new-Tutorial-Username').value = '';
+            document.getElementById('new-Tutorial-Link').value = '';
+
+            // Reset the textareas to their original size
+            resetTextareaSize();
+
+            try {        
+                const response = fetch('/putTutorial', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = response.json();
+                if (data.success) {
+                    console.log('Tutorial submitted successfully!');
+                } else {
+                    console.error('Error submitting tutorial');
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+            }
+
+            alert('Tutorial submitted!');
+        });
+    </script>
+</body>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}FRC Robotics Tutorials{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tutorial.subject }}</title>
+</head>
+<body>
+    <h1>{{ tutorial.subject }}</h1>
+    <p><strong>By:</strong> {{ tutorial.userName }}</p>
+    <p><strong>Language:</strong> {{ tutorial.language }}</p>
+
+    <h2><strong>Tutorial:</strong></h2> <p>{{ tutorial.description }}</p>
+
+
+
+    <p><strong>GitHub Link:</strong> <a href="{{ tutorial.githubLink }}" target="_blank">{{ tutorial.githubLink }}</a></p>
+    <a href="/">Back to Home</a>
+</body>
+</html>
+{% endblock %}
