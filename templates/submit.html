@@ -80,10 +80,10 @@
                 </div>
             </div>
 
-            <div class="add-Tutorial-Username">
+            <!-- <div class="add-Tutorial-Username">
                 <label for="new-Tutorial-Username">Username:</label>
                 <textarea id="new-Tutorial-Username" placeholder="Enter Username..." oninput="resizeTextarea(this)"></textarea>
-            </div>
+            </div> -->
 
             <div class="add-Tutorial-Description">
                 <label for="new-Tutorial-Description">Tutorial Description:</label>
@@ -122,13 +122,13 @@
         document.getElementById('submitButton').addEventListener('click', () => {
             const subject = document.getElementById('new-Tutorial-Subject').value;
             const description = document.getElementById('new-Tutorial-Description').value;
-            const userName = document.getElementById('new-Tutorial-Username').value;
+            // const userName = document.getElementById('new-Tutorial-Username').value;
             const link = document.getElementById('new-Tutorial-Link').value;
             const language = document.querySelector('input[name="language"]:checked')?.value;
 
 
 
-            if (!subject || !description || !userName || !link || !language) {
+            if (!subject || !description || !link || !language) {
                 alert("Please fill in all fields before submitting.");
                 return; 
             }
@@ -138,14 +138,14 @@
                 tutorialSubject: subject, 
                 tutorialDescription: description,
                 tutorialLanguage: language,  
-                tutorialUsername: userName,
+                // tutorialUsername: userName,
                 tutorialLink: link
             };
 
             // Clear the form inputs
             document.getElementById('new-Tutorial-Subject').value = '';
             document.getElementById('new-Tutorial-Description').value = '';
-            document.getElementById('new-Tutorial-Username').value = '';
+            // document.getElementById('new-Tutorial-Username').value = '';
             document.getElementById('new-Tutorial-Link').value = '';
 
             // Reset the textareas to their original size
